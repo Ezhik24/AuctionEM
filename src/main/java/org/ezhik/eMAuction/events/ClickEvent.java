@@ -12,6 +12,9 @@ public class ClickEvent implements Listener {
         if (event.getView().getTitle().contains(AhEM.auctionTitle)) {
             event.setCancelled(true);
         }
+        if (event.getView().getTitle().contains(AhEM.BuyTitle)) {
+            event.setCancelled(true);
+        }
         if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Следующая")){
             if (AhEM.page * 45 + 45 >= AhEM.lots.size()) return;
             AhEM.page++;
