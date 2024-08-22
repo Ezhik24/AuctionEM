@@ -9,14 +9,13 @@ public final class EMAuction extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        System.out.println("Пожалуйста,подпишитесь на мой тг канал: https://t.me/ezhichek11");
+        System.out.println("Please,subscribe for my telegram channel: https://t.me/ezhichek11");
         getCommand("ah").setExecutor(new AhCMD());
         Bukkit.getServer().getPluginManager().registerEvents(new ClickEvent(), this);
-        // Plugin startup logic
-
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
 }

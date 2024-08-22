@@ -235,7 +235,5 @@ public class AhEM {
         cancel9.setItemMeta(cancel9Meta);
         menu.setItem(26, cancel9);
         player.openInventory(menu);
-
-
     }
 }

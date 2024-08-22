@@ -21,11 +21,10 @@ public class AhCMD implements CommandExecutor {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНеверная команда. Введите так: /ah sell <цена>"));
                         break;
                     } else {
-                        try{
+                        try {
                             AhEM.sell(player, Integer.parseInt(strings[1]));
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &a&lВы успешно продали предмет!"));
-                        }
-                        catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНекорректная стоимость предмета!"));
                         }
                         break;
