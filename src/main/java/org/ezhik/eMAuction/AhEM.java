@@ -18,6 +18,8 @@ public class AhEM {
     public static int lotnumber = 1;
     public static int page = 0;
     public static String auctionTitle = ChatColor.translateAlternateColorCodes('&', "&c&lСтраница Аукциона.");
+    public static String BuyTitle = ChatColor.translateAlternateColorCodes('&', "&c&lВы уверены, что хотите купить этот предмет?");
+    public static List<Map> lots = new ArrayList();
 
     public static void sell(Player player, int price) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
@@ -60,7 +62,7 @@ public class AhEM {
         } catch (InvalidConfigurationException e) {
             System.out.println(e);
         }
-        List<Map> lots = (List<Map>) yamlConfiguration.getList("lots");
+        lots = (List<Map>) yamlConfiguration.getList("lots");
         for (int i = 0; i < 45; i++) {
             if (lots.size() <= i + page * 45) break;
             Map lot = lots.get(i + page * 45);
@@ -80,12 +82,12 @@ public class AhEM {
             ItemMeta previospageMeta = previouspage.getItemMeta();
             previospageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[▶] Следующая страница"));
             previouspage.setItemMeta(previospageMeta);
-            menu.setItem(50, previouspage);
+            if (page * 45 + 45 < lots.size()) menu.setItem(50, previouspage);
             ItemStack nextpage = new ItemStack(Material.SPECTRAL_ARROW);
             ItemMeta nextpageMeta = nextpage.getItemMeta();
             nextpageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[◀] Предыдущая страница"));
             nextpage.setItemMeta(nextpageMeta);
-            menu.setItem(48, nextpage);
+            if (page != 0) menu.setItem(48, nextpage);
             ItemStack storage = new ItemStack(Material.ENDER_CHEST);
             ItemMeta storageMeta = storage.getItemMeta();
             storageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[📦] Хранилище"));
@@ -96,10 +98,24 @@ public class AhEM {
             updateauctionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[🔃] Обновить аукцион"));
             updateauction.setItemMeta(updateauctionMeta);
             menu.setItem(49, updateauction);
-
         }
-
         player.openInventory(menu);
+    }
+
+    public static void buy(Player player) {
+        Inventory menu = Bukkit.createInventory(null, 27, BuyTitle);
+        ItemStack accept1 = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+        ItemMeta accept1Meta = accept1.getItemMeta();
+        accept1Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[✔] Купить"));
+        accept1.setItemMeta(accept1Meta);
+        menu.setItem(0, accept1);
+        ItemStack cancel1 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemMeta cancel1Meta = cancel1.getItemMeta();
+        cancel1Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&l[❌] Отмена"));
+        cancel1.setItemMeta(cancel1Meta);
+        menu.setItem(8, cancel1);
+        player.openInventory(menu);
+
     }
 }
 
