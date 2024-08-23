@@ -66,7 +66,7 @@ public class AhEM {
         for (int i = 0; i < 45; i++) {
             if (lots.size() <= i + page * 45) break;
             Map lot = lots.get(i + page * 45);
-            ItemStack item = (ItemStack) lot.get("item");
+            ItemStack item = ((ItemStack) lot.get("item")).clone();
             ItemMeta meta = item.getItemMeta();
             List<String> lore = new ArrayList();
             lore.add("");
@@ -169,7 +169,7 @@ public class AhEM {
         obvodkaitem4Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&l[?]"));
         obvodkaitem4.setItemMeta(obvodkaitem4Meta);
         menu.setItem(12, obvodkaitem4);
-        menu.setItem(13, item)
+        ItemStack item = (ItemStack) lot.get("item");
         ItemStack obvodkaitem6 = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
         ItemMeta obvodkaitem6Meta = obvodkaitem6.getItemMeta();
         obvodkaitem6Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&l[?]"));
