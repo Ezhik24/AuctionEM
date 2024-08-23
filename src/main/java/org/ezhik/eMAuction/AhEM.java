@@ -169,6 +169,7 @@ public class AhEM {
         obvodkaitem4Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&l[?]"));
         obvodkaitem4.setItemMeta(obvodkaitem4Meta);
         menu.setItem(12, obvodkaitem4);
+        menu.setItem(13, item)
         ItemStack obvodkaitem6 = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
         ItemMeta obvodkaitem6Meta = obvodkaitem6.getItemMeta();
         obvodkaitem6Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&l[?]"));
