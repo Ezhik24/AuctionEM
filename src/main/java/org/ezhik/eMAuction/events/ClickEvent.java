@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.ezhik.eMAuction.AhEM;
 
 public class ClickEvent implements Listener {
@@ -24,7 +25,7 @@ public class ClickEvent implements Listener {
             }
             if (event.getSlot() >= 0 && event.getSlot() < 45) {
                 if (AhEM.lots.size() <= event.getSlot() + AhEM.page * 45) return;
-                AhEM.buy((Player) event.getWhoClicked(), AhEM.lots.get(event.getSlot() + AhEM.page * 45).get("item").clone());
+                AhEM.buy((Player) event.getWhoClicked(), ((ItemStack) AhEM.lots.get(event.getSlot() + AhEM.page * 45).get("item")).clone());
             }
             event.setCancelled(true);
         }
