@@ -71,39 +71,44 @@ public class AhEM {
             System.out.println(e);
         }
         lots = (List<Map>) yamlConfiguration.getList("lots");
+        Map lot = new HashMap();
+        ItemStack item = null;
         for (int i = 0; i < 45; i++) {
-            if (lots.size() <= i + getPage() * 45) break;
-            Map lot = lots.get(i + getPage() * 45);
-            ItemStack item = ((ItemStack) lot.get("item")).clone();
-            ItemMeta meta = item.getItemMeta();
-            List<String> lore = new ArrayList();
-            if (meta.hasLore()) {
-                lore = meta.getLore();
+            if (lots.size() <= i + getPage() * 45) item = null;
+            else {
+                lot = lots.get(i + getPage() * 45);
+                item = ((ItemStack) lot.get("item")).clone();
+                ItemMeta meta = item.getItemMeta();
+                List<String> lore = new ArrayList();
+                if (meta.hasLore()) {
+                    lore = meta.getLore();
+                }
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&l==============================="));
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&e&l<-- &a&lНажми, что бы купить."));
+                lore.add("");
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lЛот &f&l№ " + lot.get("lotnumber")));
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lЦена: &f&l" + lot.get("price")));
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lПродавец: &f&l" + lot.get("player")));
+                meta.setLore(lore);
+                item.setItemMeta(meta);
             }
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&a&l==============================="));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&e&l<-- &a&lНажми, что бы купить."));
-            lore.add("");
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lЛот &f&l№ " + lot.get("lotnumber")));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lЦена: &f&l" + lot.get("price")));
-            lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lПродавец: &f&l" + lot.get("player")));
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-            auctionmenu.addItem(item);
-            ItemStack previouspage = new ItemStack(Material.SPECTRAL_ARROW);
-            ItemMeta previospageMeta = previouspage.getItemMeta();
-            previospageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[▶] Следующая страница"));
-            previouspage.setItemMeta(previospageMeta);
-            if (getPage() * 45 + 45 < lots.size()) auctionmenu.setItem(50, previouspage);
-            ItemStack nextpage = new ItemStack(Material.SPECTRAL_ARROW);
-            ItemMeta nextpageMeta = nextpage.getItemMeta();
-            nextpageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[◀] Предыдущая страница"));
-            nextpage.setItemMeta(nextpageMeta);
-            if (getPage() != 0) auctionmenu.setItem(48, nextpage);
-            ItemStack storage = new ItemStack(Material.ENDER_CHEST);
-            ItemMeta storageMeta = storage.getItemMeta();
-            storageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[📦] Хранилище"));
-            storage.setItemMeta(storageMeta);
-            auctionmenu.setItem(46, storage);
+                auctionmenu.addItem(item);
+                ItemStack previouspage = new ItemStack(Material.SPECTRAL_ARROW);
+                ItemMeta previospageMeta = previouspage.getItemMeta();
+                previospageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[▶] Следующая страница"));
+                previouspage.setItemMeta(previospageMeta);
+                if (getPage() * 45 + 45 < lots.size()) auctionmenu.setItem(50, previouspage);
+                ItemStack nextpage = new ItemStack(Material.SPECTRAL_ARROW);
+                ItemMeta nextpageMeta = nextpage.getItemMeta();
+                nextpageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[◀] Предыдущая страница"));
+                nextpage.setItemMeta(nextpageMeta);
+                if (getPage() != 0) auctionmenu.setItem(48, nextpage);
+                ItemStack storage = new ItemStack(Material.ENDER_CHEST);
+                ItemMeta storageMeta = storage.getItemMeta();
+                storageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[📦] Хранилище"));
+                storage.setItemMeta(storageMeta);
+                auctionmenu.setItem(46, storage);
+
         }
         player.openInventory(auctionmenu);
     }
