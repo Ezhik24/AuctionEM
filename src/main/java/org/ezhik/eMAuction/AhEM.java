@@ -57,7 +57,8 @@ public class AhEM {
         ItemMeta updateauctionMeta = updateauction.getItemMeta();
         updateauctionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[🔃] Обновить аукцион"));
         Integer pages = ((lots.size() / 45) + 1);
-        updateauctionMeta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7&lСтраница "), "1", " из ", pages.toString()));
+        Integer page = getPage() + 1;
+        updateauctionMeta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7&lСтраница "), page.toString(), " из ", pages.toString()));
         updateauction.setItemMeta(updateauctionMeta);
         auctionmenu.setItem(49, updateauction);
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
@@ -248,6 +249,8 @@ public class AhEM {
     }
 
     private static Integer getPage() {
-        return Integer.parseInt(auctionmenu.getItem(49).getItemMeta().getLore().get(1)) - 1;
+        ItemStack updateauction = auctionmenu.getItem(49);
+        if (updateauction == null) return 0;
+        return Integer.parseInt(updateauction.getItemMeta().getLore().get(1)) - 1;
     }
 }
