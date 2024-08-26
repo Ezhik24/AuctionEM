@@ -102,8 +102,9 @@ public class AhEM {
         player.openInventory(menu);
     }
 
-    public static void buy(Player player, ItemStack item) {
+    public static void buy(Player player, ItemStack sellingitem) {
         Inventory menu = Bukkit.createInventory(null, 27, BuyTitle);
+        menu.setItem(13, sellingitem);
         ItemStack accept1 = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta accept1Meta = accept1.getItemMeta();
         accept1Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[✔] Купить"));
@@ -169,7 +170,6 @@ public class AhEM {
         obvodkaitem4Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&l[?]"));
         obvodkaitem4.setItemMeta(obvodkaitem4Meta);
         menu.setItem(12, obvodkaitem4);
-        ItemStack item = (ItemStack) lot.get("item");
         ItemStack obvodkaitem6 = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
         ItemMeta obvodkaitem6Meta = obvodkaitem6.getItemMeta();
         obvodkaitem6Meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&l[?]"));
