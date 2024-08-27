@@ -20,6 +20,7 @@ public class AhEM {
     public static String BuyTitle = ChatColor.translateAlternateColorCodes('&', "&c&lВы уверены, что хотите купить этот предмет?");
     public static List<Map> lots = new ArrayList();
     private static Inventory auctionmenu = Bukkit.createInventory(null, 54, auctionTitle);
+    private static Map <String, Integer> pages = new HashMap();
 
     public static void sell(Player player, int price) {
 
@@ -56,9 +57,6 @@ public class AhEM {
         ItemStack updateauction = new ItemStack(Material.NETHER_STAR);
         ItemMeta updateauctionMeta = updateauction.getItemMeta();
         updateauctionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[🔃] Обновить аукцион"));
-        Integer pages = ((lots.size() / 45) + 1);
-        Integer page = getPage() + 1;
-        updateauctionMeta.setLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', "&7&lСтраница "), page.toString(), " из ", pages.toString()));
         updateauction.setItemMeta(updateauctionMeta);
         auctionmenu.setItem(49, updateauction);
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
@@ -92,7 +90,8 @@ public class AhEM {
                 meta.setLore(lore);
                 item.setItemMeta(meta);
             }
-                auctionmenu.addItem(item);
+
+                auctionmenu.setItem(i, item);
                 ItemStack previouspage = new ItemStack(Material.SPECTRAL_ARROW);
                 ItemMeta previospageMeta = previouspage.getItemMeta();
                 previospageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[▶] Следующая страница"));
@@ -248,9 +247,8 @@ public class AhEM {
         menu.setItem(26, cancel9);
         player.openInventory(menu);
     }
-    public static void setPage(Integer page) {
-        page++;
-        auctionmenu.getItem(49).getItemMeta().getLore().set(1, page.toString());
+    public static void setPage(Integer page, Player player) {
+
     }
 
     private static Integer getPage() {

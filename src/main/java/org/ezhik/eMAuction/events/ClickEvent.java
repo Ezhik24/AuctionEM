@@ -12,13 +12,13 @@ public class ClickEvent implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getView().getTitle().contains(AhEM.auctionTitle)) {
-            if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Следующая")){
+            if(event.getSlot() == 50){
                 if (getpage(event.getClickedInventory()) * 45 + 45 >= AhEM.lots.size()) return;
                 AhEM.setPage(getpage(event.getClickedInventory()) + 1);
                 event.getView().close();
                 AhEM.openauction((Player) event.getWhoClicked());
             }
-            if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Предыдущая")){
+            if(event.getSlot() == 48){
                 if (getpage(event.getClickedInventory()) == 0) return;
                 AhEM.setPage(getpage(event.getClickedInventory()) - 1);
                 event.getView().close();
