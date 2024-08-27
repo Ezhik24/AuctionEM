@@ -72,9 +72,9 @@ public class AhEM {
         Map lot = new HashMap();
         ItemStack item = null;
         for (int i = 0; i < 45; i++) {
-            if (lots.size() <= i + getPage() * 45) item = null;
+            if (lots.size() <= i + getPage(player) * 45) item = null;
             else {
-                lot = lots.get(i + getPage() * 45);
+                lot = lots.get(i + getPage(player) * 45);
                 item = ((ItemStack) lot.get("item")).clone();
                 ItemMeta meta = item.getItemMeta();
                 List<String> lore = new ArrayList();
@@ -96,12 +96,14 @@ public class AhEM {
                 ItemMeta previospageMeta = previouspage.getItemMeta();
                 previospageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[▶] Следующая страница"));
                 previouspage.setItemMeta(previospageMeta);
-                if (getPage() * 45 + 45 < lots.size()) auctionmenu.setItem(50, previouspage);
+                if (getPage(player) * 45 + 45 < lots.size()) auctionmenu.setItem(50, previouspage);
+                else auctionmenu.setItem(50, null);
                 ItemStack nextpage = new ItemStack(Material.SPECTRAL_ARROW);
                 ItemMeta nextpageMeta = nextpage.getItemMeta();
                 nextpageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[◀] Предыдущая страница"));
                 nextpage.setItemMeta(nextpageMeta);
-                if (getPage() != 0) auctionmenu.setItem(48, nextpage);
+                if (getPage(player) != 0) auctionmenu.setItem(48, nextpage);
+                else auctionmenu.setItem(48, null);
                 ItemStack storage = new ItemStack(Material.ENDER_CHEST);
                 ItemMeta storageMeta = storage.getItemMeta();
                 storageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[📦] Хранилище"));
@@ -248,12 +250,24 @@ public class AhEM {
         player.openInventory(menu);
     }
     public static void setPage(Integer page, Player player) {
-
+        pages.put(player.getName(), page);
     }
 
-    private static Integer getPage() {
-        ItemStack updateauction = auctionmenu.getItem(49);
-        if (updateauction == null) return 0;
-        return Integer.parseInt(updateauction.getItemMeta().getLore().get(1)) - 1;
+    public static Integer getPage(Player player) {
+        if(!pages.containsKey(player.getName())) return 0;
+        else return pages.get(player.getName());
+    }
+
+    public static void incpage(Player player) {
+        if (!pages.containsKey(player.getName())) setPage(1, player);
+        else setPage(pages.get(player.getName()) + 1, player);
+    }
+
+    public static void decpage(Player player) {
+        if (!pages.containsKey(player.getName())) setPage(0, player);
+        else {
+            if(pages.get(player.getName()) > 0) setPage(pages.get(player.getName()) - 1, player);
+            else setPage(0, player);
+        }
     }
 }
