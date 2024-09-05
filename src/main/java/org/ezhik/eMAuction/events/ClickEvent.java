@@ -11,34 +11,35 @@ import org.ezhik.eMAuction.AhEM;
 public class ClickEvent implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+        AhEM ah = new AhEM();
         Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTitle().contains(AhEM.auctionTitle)) {
+        if (event.getView().getTitle().contains(ah.auctionTitle)) {
             if(event.getSlot() == 50){
-                if (AhEM.getPage(player) * 45 + 45 >= AhEM.lots.size()) return;
-                AhEM.incpage(player);
+                if (ah.page * 45 + 45 >= ah.lots.size()) return;
+                ah.page++;
                 event.getView().close();
-                AhEM.openauction((Player) event.getWhoClicked());
+                ah.openauction((Player) event.getWhoClicked());
             }
             if(event.getSlot() == 48){
-                if (AhEM.getPage(player) == 0) return;
-                AhEM.decpage(player);
+                if (ah.page == 0) return;
+                ah.page--;
                 event.getView().close();
-                AhEM.openauction((Player) event.getWhoClicked());
+                ah.openauction((Player) event.getWhoClicked());
             }
             if (event.getSlot() == 49) {
                 event.getView().close();
-                AhEM.openauction((Player) event.getWhoClicked());
+                ah.openauction((Player) event.getWhoClicked());
             }
             if (event.getSlot() >= 0 && event.getSlot() < 45) {
-                if (AhEM.lots.size() <= event.getSlot() + AhEM.getPage(player) * 45) return;
-                AhEM.buy((Player) event.getWhoClicked(), ((ItemStack) AhEM.lots.get(event.getSlot() + AhEM.getPage(player) * 45).get("item")).clone());
+                if (ah.lots.size() <= event.getSlot() + ah.page * 45) return;
+                ah.buy((Player) event.getWhoClicked(), ((ItemStack) ah.lots.get(event.getSlot() + ah.page * 45).get("item")).clone());
             }
             event.setCancelled(true);
         }
-        if (event.getView().getTitle().contains(AhEM.BuyTitle)) {
+        if (event.getView().getTitle().contains(ah.BuyTitle)) {
             if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Отмена")) {
                 event.getView().close();
-                AhEM.openauction((Player) event.getWhoClicked());
+                ah.openauction((Player) event.getWhoClicked());
             }
             event.setCancelled(true);
         }

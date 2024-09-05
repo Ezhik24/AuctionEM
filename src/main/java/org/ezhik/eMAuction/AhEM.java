@@ -15,14 +15,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class AhEM {
-    public static int lotnumber = 1;
-    public static String auctionTitle = ChatColor.translateAlternateColorCodes('&', "&c&lСтраница Аукциона.");
-    public static String BuyTitle = ChatColor.translateAlternateColorCodes('&', "&c&lВы уверены, что хотите купить этот предмет?");
-    public static List<Map> lots = new ArrayList();
-    private static Inventory auctionmenu = Bukkit.createInventory(null, 54, auctionTitle);
-    private static Map <String, Integer> pages = new HashMap();
+    public int lotnumber = 1;
+    public String auctionTitle = ChatColor.translateAlternateColorCodes('&', "&c&lСтраница Аукциона.");
+    public String BuyTitle = ChatColor.translateAlternateColorCodes('&', "&c&lВы уверены, что хотите купить этот предмет?");
+    public List<Map> lots = new ArrayList();
+    private Inventory auctionmenu = Bukkit.createInventory(null, 54, auctionTitle);
+    public Integer page = 0;
 
-    public static void sell(Player player, int price) {
+    public void sell(Player player, int price) {
 
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         File file = new File("plugins/EMAuctions/config.yml");
@@ -53,7 +53,7 @@ public class AhEM {
             }
             lotnumber++;
         }
-    public static void openauction(Player player) {
+    public void openauction(Player player) {
         ItemStack updateauction = new ItemStack(Material.NETHER_STAR);
         ItemMeta updateauctionMeta = updateauction.getItemMeta();
         updateauctionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[🔃] Обновить аукцион"));
@@ -72,9 +72,9 @@ public class AhEM {
         Map lot = new HashMap();
         ItemStack item = null;
         for (int i = 0; i < 45; i++) {
-            if (lots.size() <= i + getPage(player) * 45) item = null;
+            if (lots.size() <= i + page * 45) item = null;
             else {
-                lot = lots.get(i + getPage(player) * 45);
+                lot = lots.get(i + page * 45);
                 item = ((ItemStack) lot.get("item")).clone();
                 ItemMeta meta = item.getItemMeta();
                 List<String> lore = new ArrayList();
@@ -96,13 +96,13 @@ public class AhEM {
                 ItemMeta previospageMeta = previouspage.getItemMeta();
                 previospageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[▶] Следующая страница"));
                 previouspage.setItemMeta(previospageMeta);
-                if (getPage(player) * 45 + 45 < lots.size()) auctionmenu.setItem(50, previouspage);
+                if (page * 45 + 45 < lots.size()) auctionmenu.setItem(50, previouspage);
                 else auctionmenu.setItem(50, null);
                 ItemStack nextpage = new ItemStack(Material.SPECTRAL_ARROW);
                 ItemMeta nextpageMeta = nextpage.getItemMeta();
                 nextpageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&l[◀] Предыдущая страница"));
                 nextpage.setItemMeta(nextpageMeta);
-                if (getPage(player) != 0) auctionmenu.setItem(48, nextpage);
+                if (page != 0) auctionmenu.setItem(48, nextpage);
                 else auctionmenu.setItem(48, null);
                 ItemStack storage = new ItemStack(Material.ENDER_CHEST);
                 ItemMeta storageMeta = storage.getItemMeta();
@@ -114,7 +114,7 @@ public class AhEM {
         player.openInventory(auctionmenu);
     }
 
-    public static void buy(Player player, ItemStack sellingitem) {
+    public void buy(Player player, ItemStack sellingitem) {
         Inventory menu = Bukkit.createInventory(null, 27, BuyTitle);
         menu.setItem(13, sellingitem);
         ItemStack accept1 = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
@@ -249,25 +249,5 @@ public class AhEM {
         menu.setItem(26, cancel9);
         player.openInventory(menu);
     }
-    public static void setPage(Integer page, Player player) {
-        pages.put(player.getName(), page);
-    }
 
-    public static Integer getPage(Player player) {
-        if(!pages.containsKey(player.getName())) return 0;
-        else return pages.get(player.getName());
-    }
-
-    public static void incpage(Player player) {
-        if (!pages.containsKey(player.getName())) setPage(1, player);
-        else setPage(pages.get(player.getName()) + 1, player);
-    }
-
-    public static void decpage(Player player) {
-        if (!pages.containsKey(player.getName())) setPage(0, player);
-        else {
-            if(pages.get(player.getName()) > 0) setPage(pages.get(player.getName()) - 1, player);
-            else setPage(0, player);
-        }
-    }
 }

@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.checkerframework.checker.units.qual.A;
 import org.ezhik.eMAuction.AhEM;
 
 import java.util.Arrays;
@@ -17,8 +18,9 @@ import java.util.Arrays;
 public class AhCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        AhEM ah = new AhEM();
         Player player = (Player) commandSender;
-        if (strings.length == 0)  AhEM.openauction(player);
+        if (strings.length == 0)  ah.openauction(player);
         else {
             switch (strings[0]) {
                 case "sell":
@@ -27,7 +29,7 @@ public class AhCMD implements CommandExecutor {
                         break;
                     } else {
                         try {
-                            AhEM.sell(player, Integer.parseInt(strings[1]));
+                            ah.sell(player, Integer.parseInt(strings[1]));
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &a&lВы успешно продали предмет!"));
                         } catch (NumberFormatException e) {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНекорректная стоимость предмета!"));
