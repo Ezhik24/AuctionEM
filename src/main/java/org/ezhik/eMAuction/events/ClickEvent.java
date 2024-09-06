@@ -12,35 +12,37 @@ import org.ezhik.eMAuction.commands.AhCMD;
 public class ClickEvent implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getView().getTitle().contains(AhCMD.ah.auctionTitle)) {
+        Player player = (Player) event.getWhoClicked();
+        if (event.getView().getTitle().contains(AhCMD.ah.get(player.getName()).auctionTitle)) {
             if(event.getSlot() == 50){
-                if (AhCMD.ah.page * 45 + 45 < AhCMD.ah.lots.size()) {
-                    AhCMD.ah.page++;
+                if (AhCMD.ah.get(player.getName()).page * 45 + 45 < AhCMD.ah.get(player.getName()).lots.size()) {
+                    AhCMD.ah.get(player.getName()).page++;
                     event.getView().close();
-                    AhCMD.ah.openauction((Player) event.getWhoClicked());
+                    AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
                 }
             }
             if(event.getSlot() == 48) {
-                if (AhCMD.ah.page != 0) {
-                    AhCMD.ah.page--;
+                if (AhCMD.ah.get(player.getName()).page != 0) {
+                    AhCMD.ah.get(player.getName()).page--;
                    event.getView().close();
-                    AhCMD.ah.openauction((Player) event.getWhoClicked());
+                    AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
                 }
             }
             if (event.getSlot() == 49) {
                 event.getView().close();
-                AhCMD.ah.openauction((Player) event.getWhoClicked());
+                AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
             }
             if (event.getSlot() >= 0 && event.getSlot() < 45) {
-                if (AhCMD.ah.lots.size() <= event.getSlot() + AhCMD.ah.page * 45)
-                    AhCMD.ah.buy((Player) event.getWhoClicked(), ((ItemStack) AhCMD.ah.lots.get(event.getSlot() + AhCMD.ah.page * 45).get("item")).clone());
+                if (!(AhCMD.ah.get(player.getName()).lots.size() <= event.getSlot() + AhCMD.ah.get(player.getName()).page * 45))
+                    AhCMD.ah.get(player.getName()).buy((Player) event.getWhoClicked(), ((ItemStack) AhCMD.ah.get(player.getName()).lots.get(event.getSlot() + AhCMD.ah.get(player.getName()).page * 45).get("item")).clone());
+
             }
             event.setCancelled(true);
         }
-        if (event.getView().getTitle().contains(AhCMD.ah.BuyTitle)) {
+        if (event.getView().getTitle().contains(AhCMD.ah.get(player.getName()).BuyTitle)) {
             if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Отмена")) {
                 event.getView().close();
-                AhCMD.ah.openauction((Player) event.getWhoClicked());
+                AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
             }
             event.setCancelled(true);
         }
