@@ -16,9 +16,10 @@ import java.util.Arrays;
 
 
 public class AhCMD implements CommandExecutor {
+    public static AhEM ah;
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        AhEM ah = new AhEM();
+        ah = new AhEM();
         Player player = (Player) commandSender;
         if (strings.length == 0)  ah.openauction(player);
         else {
