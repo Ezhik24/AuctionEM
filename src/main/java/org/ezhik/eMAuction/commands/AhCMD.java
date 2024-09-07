@@ -37,11 +37,13 @@ public class AhCMD implements CommandExecutor {
                         try {
                             ah.get(player.getName()).sell(player, Integer.parseInt(strings[1]));
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &a&lВы успешно продали предмет!"));
+                            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                         } catch (NumberFormatException e) {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНекорректная стоимость предмета!"));
                         }
                         break;
                     }
+                case "search":
                 default:
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНеверная команда. Введите так: /ah <параметр>"));
                     break;

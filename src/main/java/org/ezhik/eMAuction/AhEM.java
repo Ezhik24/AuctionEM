@@ -21,6 +21,7 @@ public class AhEM {
     public List<Map> lots = new ArrayList();
     private Inventory auctionmenu = Bukkit.createInventory(null, 54, auctionTitle);
     public Integer page = 0;
+    public Integer itemForSaleIndex = -1;
 
     public void sell(Player player, int price) {
 
@@ -114,7 +115,7 @@ public class AhEM {
         player.openInventory(auctionmenu);
     }
 
-    public void buy(Player player, ItemStack sellingitem) {
+    public void buymenu(Player player, ItemStack sellingitem) {
         Inventory menu = Bukkit.createInventory(null, 27, BuyTitle);
         menu.setItem(13, sellingitem);
         ItemStack accept1 = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
@@ -249,5 +250,42 @@ public class AhEM {
         menu.setItem(26, cancel9);
         player.openInventory(menu);
     }
-
+    public static Integer getballance(Player player) {
+        YamlConfiguration playerballance = new YamlConfiguration();
+        File file = new File("plugins/Essentials/userdata/" + player.getUniqueId() + ".yml");
+        try {
+            playerballance.load(file);
+        } catch (IOException e) {
+            System.out.println(e);
+            return 0;
+        } catch (InvalidConfigurationException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return Integer.parseInt(playerballance.getString("money"));
+    }
+    public void buy(int itemid,Player buyer) {
+        Player seller = (Player) this.lots.get(itemid).get("buyer");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"eco give " + lots.get(itemid).get("player") + " " + lots.get(itemid).get("price"));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco take " + buyer.getName() + " " + lots.get(itemid).get("price"));
+        buyer.getInventory().addItem(((ItemStack) lots.get(itemid).get("item")).clone());
+        File file = new File("plugins/EMAuctions/config.yml");
+        YamlConfiguration userconfig = new YamlConfiguration();
+        try {
+            userconfig.load(file);
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (InvalidConfigurationException e) {
+            System.out.println(e);
+        }
+        try {
+            this.lots.remove(itemid);
+            userconfig.set("lots", this.lots);
+            userconfig.save(file);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купиили предмет "));
+        buyer.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lВы успешно купили предмет "));
+    }
 }
