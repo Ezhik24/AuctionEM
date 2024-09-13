@@ -22,6 +22,7 @@ public class AhEM {
     private Inventory auctionmenu = Bukkit.createInventory(null, 54, auctionTitle);
     public Integer page = 0;
     public Integer itemForSaleIndex = -1;
+    public List<ItemStack> storageUser = new ArrayList<>();
 
     public void sell(Player player, int price) {
 
@@ -268,7 +269,15 @@ public class AhEM {
         Player seller = (Player) this.lots.get(itemid).get("buyer");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"eco give " + lots.get(itemid).get("player") + " " + lots.get(itemid).get("price"));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco take " + buyer.getName() + " " + lots.get(itemid).get("price"));
-        buyer.getInventory().addItem(((ItemStack) lots.get(itemid).get("item")).clone());
+        for (int i = 0; i < 36; i++){
+            if (buyer.getInventory().getItem(i) == null){
+                buyer.getInventory().addItem(((ItemStack) lots.get(itemid).get("item")).clone());
+                lots.get(itemid).put("item",null);
+                break;
+            }
+        }
+        this.storageUser.add(((ItemStack) lots.get(itemid).get("item")).clone());
+        System.out.println(storageUser);
         File file = new File("plugins/EMAuctions/config.yml");
         YamlConfiguration userconfig = new YamlConfiguration();
         try {

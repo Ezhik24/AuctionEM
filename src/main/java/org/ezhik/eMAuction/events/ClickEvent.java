@@ -1,5 +1,6 @@
 package org.ezhik.eMAuction.events;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,9 +49,9 @@ public class ClickEvent implements Listener {
             if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Купить")) {
                 Integer itemid = AhCMD.ah.get(player.getName()).itemForSaleIndex;
                 if ((Integer) AhCMD.ah.get(player.getName()).lots.get(itemid).get("price") <= AhEM.getballance(player)){
-                    AhCMD.ah.get(player.getName()).buy(itemid,player);
-                    event.getView().close();
-                    AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
+                        AhCMD.ah.get(player.getName()).buy(itemid, player);
+                        event.getView().close();
+                        AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
                 }
 
             }
