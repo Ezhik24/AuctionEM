@@ -272,11 +272,12 @@ public class AhEM {
         for (int i = 0; i < 36; i++){
             if (buyer.getInventory().getItem(i) == null){
                 buyer.getInventory().addItem(((ItemStack) lots.get(itemid).get("item")).clone());
-                lots.get(itemid).put("item",null);
+                lots.get(itemid).put("item", null);
                 break;
             }
+        } if (lots.get(itemid).get("item") != null) {
+            this.storageUser.add(((ItemStack) lots.get(itemid).get("item")));
         }
-        this.storageUser.add(((ItemStack) lots.get(itemid).get("item")).clone());
         System.out.println(storageUser);
         File file = new File("plugins/EMAuctions/config.yml");
         YamlConfiguration userconfig = new YamlConfiguration();
@@ -294,7 +295,7 @@ public class AhEM {
         } catch (IOException e) {
             System.out.println(e);
         }
-        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купиили предмет "));
+        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купили предмет: " + ((ItemStack) lots.get(itemid).get("item")).getItemMeta().getLocalizedName()));
         buyer.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lВы успешно купили предмет "));
     }
 }
