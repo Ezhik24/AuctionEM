@@ -25,7 +25,7 @@ public class AhEM {
     public Integer page = 0;
     public Integer itemForSaleIndex = -1;
     public List<ItemStack> storageUser = new ArrayList<>();
-    public Map<UUID, List<ItemStack>> storage = new HashMap<>();
+    public Map<String, List<ItemStack>> storage = new HashMap<>();
 
     public void sell(Player player, int price) {
 
@@ -257,7 +257,7 @@ public class AhEM {
     public void storagemenu(Player player) {
         Inventory menu = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', "&c&lХранилище"));
         for (int i = 0; i < storageUser.size(); i++) {
-            menu.setItem(i, storageUser.get(i));
+            menu.setItem(i, (ItemStack) storage.get("players_storage"));
         }
         player.openInventory(menu);
     }
@@ -294,11 +294,12 @@ public class AhEM {
                 Player p = Bukkit.getPlayer(playername);
                 if (p != null) uuid = p.getUniqueId();
                 else uuid = Bukkit.getOfflinePlayer(playername).getUniqueId();
-                storage.put((uuid), AhCMD.ah.get(playername).storageUser);
+                storage.put((uuid.toString()), AhCMD.ah.get(playername).storageUser);
             }
             try {
-                storageconfig.set("players_storage", storage);
+
                 storageconfig.load(file);
+                storageconfig.set("players_storage", storage);
             } catch (IOException e) {
                 System.out.println(e);
             } catch (InvalidConfigurationException e) {
