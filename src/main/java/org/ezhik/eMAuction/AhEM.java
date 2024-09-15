@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.ezhik.eMAuction.commands.AhCMD;
+import org.ezhik.eMAuction.events.ClickEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class AhEM {
     public Integer page = 0;
     public Integer itemForSaleIndex = -1;
     public List<ItemStack> storageUser = new ArrayList<>();
+    public Map<UUID, List<ItemStack>> storage = new HashMap<>();
 
     public void sell(Player player, int price) {
 
@@ -251,6 +254,13 @@ public class AhEM {
         menu.setItem(26, cancel9);
         player.openInventory(menu);
     }
+    public void storagemenu(Player player) {
+        Inventory menu = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', "&c&lХранилище"));
+        for (int i = 0; i < storageUser.size(); i++) {
+            menu.setItem(i, storageUser.get(i));
+        }
+        player.openInventory(menu);
+    }
     public static Integer getballance(Player player) {
         YamlConfiguration playerballance = new YamlConfiguration();
         File file = new File("plugins/Essentials/userdata/" + player.getUniqueId() + ".yml");
@@ -277,6 +287,28 @@ public class AhEM {
             }
         } if (lots.get(itemid).get("item") != null) {
             this.storageUser.add(((ItemStack) lots.get(itemid).get("item")));
+            YamlConfiguration storageconfig = new YamlConfiguration();
+            File file = new File("plugins/EMAuctions/storage.yml");
+            UUID uuid;
+            for(String playername : AhCMD.ah.keySet()) {
+                Player p = Bukkit.getPlayer(playername);
+                if (p != null) uuid = p.getUniqueId();
+                else uuid = Bukkit.getOfflinePlayer(playername).getUniqueId();
+                storage.put((uuid), AhCMD.ah.get(playername).storageUser);
+            }
+            try {
+                storageconfig.set("players_storage", storage);
+                storageconfig.load(file);
+            } catch (IOException e) {
+                System.out.println(e);
+            } catch (InvalidConfigurationException e) {
+                System.out.println(e);
+            }
+            try {
+                storageconfig.save(file);
+            } catch (IOException e) {
+                System.out.println(e);
+            }
         }
         System.out.println(storageUser);
         File file = new File("plugins/EMAuctions/config.yml");
@@ -298,4 +330,5 @@ public class AhEM {
         if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купили предмет: " + ((ItemStack) lots.get(itemid).get("item")).getItemMeta().getLocalizedName()));
         buyer.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lВы успешно купили предмет "));
     }
+
 }
