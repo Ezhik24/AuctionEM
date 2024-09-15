@@ -23,13 +23,13 @@ public class AhCMD implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
         if (strings.length == 0)  {
-            if (!ah.containsKey(player.getName())) ah.put(player.getName(), new AhEM());
+            if (!ah.containsKey(player.getName())) ah.put(player.getName(), new AhEM((Player) commandSender));
             ah.get(player.getName()).openauction(player);
         }
         else {
             switch (strings[0]) {
                 case "sell":
-                    if (!ah.containsKey(player.getName())) ah.put(player.getName(), new AhEM());
+                    if (!ah.containsKey(player.getName())) ah.put(player.getName(), new AhEM((Player) commandSender));
                     if (strings.length != 2) {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНеверная команда. Введите так: /ah sell <цена>"));
                         break;

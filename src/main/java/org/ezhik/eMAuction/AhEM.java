@@ -10,7 +10,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.ezhik.eMAuction.commands.AhCMD;
-import org.ezhik.eMAuction.events.ClickEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +26,24 @@ public class AhEM {
     public List<ItemStack> storageUser = new ArrayList<>();
     public Map<String, List<ItemStack>> storage = new HashMap<>();
 
+    public AhEM(Player player) {
+        File storageFile = new File("plugins/EMAuctions/storage.yml");
+        YamlConfiguration storageConfig = new YamlConfiguration();
+        try {
+            storageConfig.load(storageFile);
+        } catch (IOException e) {
+            System.out.println("Error loading storage file: " + e.getMessage());
+        } catch (InvalidConfigurationException e) {
+            System.out.println("Error parsing storage file: " + e.getMessage());
+        }
+        Map storageMap = storageConfig.getValues("players_storage");
+        if (storageMap != null) {
+            if (storageMap.containsKey(player.getUniqueId().toString())) {
+                this.storageUser = (List<ItemStack>) storageMap.get(player.getUniqueId().toString());
+            }
+        }
+
+    }
     public void sell(Player player, int price) {
 
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
