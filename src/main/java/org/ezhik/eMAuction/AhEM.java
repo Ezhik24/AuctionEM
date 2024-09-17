@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.ezhik.eMAuction.commands.AhCMD;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,28 +27,25 @@ public class AhEM {
     public List<ItemStack> storageUser = new ArrayList<>();
     public Map<String, List<ItemStack>> storage = new HashMap<>();
 
-    public AhEM(Player player) {
-        File storageFile = new File("plugins/EMAuctions/storage.yml");
+    public  AhEM(Player player) {
+        File storageFile = new File("plugins/EMAuctions/auction/" + player.getUniqueId() + ".yml");
         YamlConfiguration storageConfig = new YamlConfiguration();
         try {
             storageConfig.load(storageFile);
+            if (storageConfig.getList("storage") != null) {
+                this.storageUser = (List<ItemStack>) storageConfig.getList("storage");
+            }
         } catch (IOException e) {
             System.out.println("Error loading storage file: " + e.getMessage());
         } catch (InvalidConfigurationException e) {
             System.out.println("Error parsing storage file: " + e.getMessage());
-        }
-        Map storageMap = storageConfig.getValues("players_storage");
-        if (storageMap != null) {
-            if (storageMap.containsKey(player.getUniqueId().toString())) {
-                this.storageUser = (List<ItemStack>) storageMap.get(player.getUniqueId().toString());
-            }
         }
 
     }
     public void sell(Player player, int price) {
 
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        File file = new File("plugins/EMAuctions/config.yml");
+        File file = new File("plugins/EMAuctions/auction/lots/lots.yml");
         List lots = new ArrayList();
         Map lot = new HashMap();
         if (file.exists()) {
@@ -82,7 +80,7 @@ public class AhEM {
         updateauction.setItemMeta(updateauctionMeta);
         auctionmenu.setItem(49, updateauction);
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        File file = new File("plugins/EMAuctions/config.yml");
+        File file = new File("plugins/EMAuctions/auction/lots/lots.yml");
         try {
             yamlConfiguration.load(file);
         } catch (IOException e) {
@@ -91,8 +89,8 @@ public class AhEM {
             System.out.println(e);
         }
         lots = (List<Map>) yamlConfiguration.getList("lots");
-        Map lot = new HashMap();
-        ItemStack item = null;
+        Map lot;
+        ItemStack item;
         for (int i = 0; i < 45; i++) {
             if (lots.size() <= i + page * 45) item = null;
             else {
@@ -273,8 +271,8 @@ public class AhEM {
     }
     public void storagemenu(Player player) {
         Inventory menu = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', "&c&lХранилище"));
-        for (int i = 0; i < storageUser.size(); i++) {
-            menu.setItem(i, (ItemStack) storage.get("players_storage"));
+        for (ItemStack item : storageUser) {
+            menu.addItem(item).clone();
         }
         player.openInventory(menu);
     }
@@ -305,7 +303,7 @@ public class AhEM {
         } if (lots.get(itemid).get("item") != null) {
             this.storageUser.add(((ItemStack) lots.get(itemid).get("item")));
             YamlConfiguration storageconfig = new YamlConfiguration();
-            File file = new File("plugins/EMAuctions/storage.yml");
+            File file = new File("plugins/EMAuctions/auction/" + buyer.getUniqueId() + ".yml");
             UUID uuid;
             for(String playername : AhCMD.ah.keySet()) {
                 Player p = Bukkit.getPlayer(playername);
@@ -314,9 +312,8 @@ public class AhEM {
                 storage.put((uuid.toString()), AhCMD.ah.get(playername).storageUser);
             }
             try {
-
                 storageconfig.load(file);
-                storageconfig.set("players_storage", storage);
+                storageconfig.set("storage", storage);
             } catch (IOException e) {
                 System.out.println(e);
             } catch (InvalidConfigurationException e) {
@@ -329,7 +326,7 @@ public class AhEM {
             }
         }
         System.out.println(storageUser);
-        File file = new File("plugins/EMAuctions/config.yml");
+        File file = new File("plugins/EMAuctions/auction/lots/lots.yml");
         YamlConfiguration userconfig = new YamlConfiguration();
         try {
             userconfig.load(file);
@@ -345,7 +342,7 @@ public class AhEM {
         } catch (IOException e) {
             System.out.println(e);
         }
-        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купили предмет: " + ((ItemStack) lots.get(itemid).get("item")).getItemMeta().getLocalizedName()));
+        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купили предмет: " + ((ItemStack) lots.get(itemid).get("item")).getItemMeta().getCustomModelData()));
         buyer.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lВы успешно купили предмет "));
     }
 
