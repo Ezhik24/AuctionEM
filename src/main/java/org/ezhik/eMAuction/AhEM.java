@@ -104,7 +104,6 @@ public class AhEM {
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&a&l==============================="));
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&e&l<-- &a&lНажми, что бы купить."));
                 lore.add("");
-                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lЛот &f&l№ " + lot.get("lotnumber")));
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lЦена: &f&l" + lot.get("price")));
                 lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lПродавец: &f&l" + lot.get("player")));
                 meta.setLore(lore);
@@ -271,8 +270,8 @@ public class AhEM {
     }
     public void storagemenu(Player player) {
         Inventory menu = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', "&c&lХранилище"));
-        for (ItemStack item : storageUser) {
-            menu.addItem(item).clone();
+        for (int i = 0;i < storageUser.size(); i++) {
+            menu.setItem(i, storageUser.get(i));
         }
         player.openInventory(menu);
     }
