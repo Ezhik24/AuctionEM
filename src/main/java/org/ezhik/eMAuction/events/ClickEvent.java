@@ -1,5 +1,6 @@
 package org.ezhik.eMAuction.events;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -55,6 +56,9 @@ public class ClickEvent implements Listener {
                     AhCMD.ah.get(player.getName()).buy(itemid,player);
                     event.getView().close();
                     AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
+                } else {
+                    event.getView().close();
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНедостаточно средств для покупки этого предмета!"));
                 }
 
             }

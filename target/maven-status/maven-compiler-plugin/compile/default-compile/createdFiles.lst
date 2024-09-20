@@ -1,4 +1,4 @@
-org/ezhik/eMAuction/AhEM.class
-org/ezhik/eMAuction/EMAuction.class
-org/ezhik/eMAuction/commands/AhCMD.class
-org/ezhik/eMAuction/events/ClickEvent.class
+org\ezhik\eMAuction\commands\AhCMD.class
+org\ezhik\eMAuction\events\ClickEvent.class
+org\ezhik\eMAuction\AhEM.class
+org\ezhik\eMAuction\EMAuction.class

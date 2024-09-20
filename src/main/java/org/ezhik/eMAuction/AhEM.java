@@ -28,7 +28,7 @@ public class AhEM {
     public Map<String, List<ItemStack>> storage = new HashMap<>();
 
     public  AhEM(Player player) {
-        File storageFile = new File("plugins/EMAuctions/auction/" + player.getUniqueId() + ".yml");
+        File storageFile = new File("plugins/EMAuctions/auction/storage/" + player.getUniqueId() + ".yml");
         YamlConfiguration storageConfig = new YamlConfiguration();
         try {
             storageConfig.load(storageFile);
@@ -302,7 +302,7 @@ public class AhEM {
         } if (lots.get(itemid).get("item") != null) {
             this.storageUser.add(((ItemStack) lots.get(itemid).get("item")));
             YamlConfiguration storageconfig = new YamlConfiguration();
-            File file = new File("plugins/EMAuctions/auction/" + buyer.getUniqueId() + ".yml");
+            File file = new File("plugins/EMAuctions/auction/storage/" + buyer.getUniqueId() + ".yml");
             UUID uuid;
             for(String playername : AhCMD.ah.keySet()) {
                 Player p = Bukkit.getPlayer(playername);

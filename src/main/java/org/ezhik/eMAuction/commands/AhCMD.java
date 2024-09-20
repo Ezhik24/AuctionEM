@@ -43,7 +43,6 @@ public class AhCMD implements CommandExecutor {
                         }
                         break;
                     }
-                case "search":
                 default:
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lEzhik&6&lMine &8&l>> &c&lНеверная команда. Введите так: /ah <параметр>"));
                     break;
