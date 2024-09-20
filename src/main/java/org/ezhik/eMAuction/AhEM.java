@@ -3,8 +3,10 @@ package org.ezhik.eMAuction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -290,7 +292,8 @@ public class AhEM {
         return Integer.parseInt(playerballance.getString("money"));
     }
     public void buy(int itemid,Player buyer) {
-        Player seller = (Player) this.lots.get(itemid).get("buyer");
+        String playerName = (String) lots.get(itemid).get("player");
+        Player seller = Bukkit.getPlayer(playerName);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"eco give " + lots.get(itemid).get("player") + " " + lots.get(itemid).get("price"));
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco take " + buyer.getName() + " " + lots.get(itemid).get("price"));
         for (int i = 0; i < 36; i++){
@@ -341,7 +344,7 @@ public class AhEM {
         } catch (IOException e) {
             System.out.println(e);
         }
-        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купили предмет: " + ((ItemStack) lots.get(itemid).get("item")).getItemMeta().getCustomModelData()));
+        if (seller != null) seller.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lУ вас успешно купили предмет: "));
         buyer.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&lEzhik&6&lMine &8&l>> &a&lВы успешно купили предмет "));
     }
 
