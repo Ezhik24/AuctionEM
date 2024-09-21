@@ -64,6 +64,17 @@ public class ClickEvent implements Listener {
             }
             event.setCancelled(true);
         }
+        if (event.getView().getTitle().contains(AhCMD.ah.get(player.getName()).storageTitle)) {
+            if (event.getSlot() == 49) {
+                event.getView().close();
+                AhCMD.ah.get(player.getName()).storagemenu((Player) event.getWhoClicked());
+            }
+            if (event.getSlot() == 52) {
+                event.getView().close();
+                AhCMD.ah.get(player.getName()).openauction((Player) event.getWhoClicked());
+            }
+            event.setCancelled(true);
+        }
 
     }
 

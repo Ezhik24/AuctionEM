@@ -21,7 +21,8 @@ import java.util.*;
 public class AhEM {
     public int lotnumber = 1;
     public String auctionTitle = ChatColor.translateAlternateColorCodes('&', "&c&lСтраница Аукциона.");
-    public String BuyTitle = ChatColor.translateAlternateColorCodes('&', "&c&lВы уверены, что хотите купить этот предмет?");
+    public String BuyTitle = ChatColor.translateAlternateColorCodes('&', "&c&lВы хотите купить этот предмет?");
+    public String storageTitle = ChatColor.translateAlternateColorCodes('&', "&c&lХранилище");
     public List<Map> lots = new ArrayList();
     private Inventory auctionmenu = Bukkit.createInventory(null, 54, auctionTitle);
     public Integer page = 0;
@@ -271,10 +272,20 @@ public class AhEM {
         player.openInventory(menu);
     }
     public void storagemenu(Player player) {
-        Inventory menu = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', "&c&lХранилище"));
+        Inventory menu = Bukkit.createInventory(null, 54, storageTitle);
         for (int i = 0;i < storageUser.size(); i++) {
             menu.setItem(i, storageUser.get(i));
         }
+        ItemStack updatestorage = new ItemStack(Material.NETHER_STAR);
+        ItemMeta updatestorageMeta = updatestorage.getItemMeta();
+        updatestorageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&lОбновить хранилище"));
+        updatestorage.setItemMeta(updatestorageMeta);
+        menu.setItem(49, updatestorage);
+        ItemStack exitstorage = new ItemStack(Material.BARRIER);
+        ItemMeta exitstorageMeta = exitstorage.getItemMeta();
+        exitstorageMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lВыход из хранилища"));
+        exitstorage.setItemMeta(exitstorageMeta);
+        menu.setItem(52, exitstorage);
         player.openInventory(menu);
     }
     public static Integer getballance(Player player) {
